@@ -14,13 +14,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'test'
 api = Api(app)
 
-#before the first request runs, it runs the below method
-@app.before_first_request
-def create_tables():
-    #creates 'sqlite:///data.db'
-    #only creates tables it sees (goes through imports)
-    db.create_all()
-
 jwt = JWT(app, authenticate, identity) #creates a new endpoint; /auth
 
 api.add_resource(Store, '/store/<string:name>')
@@ -31,6 +24,7 @@ api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register') #when POST request, calls post method in user.py
 
 #incase we import app.py later; doesn't run our app
+#runs when we do this from command prompt, uwsgi doesn't see this
 if __name__ == '__main__':
     #import this here due to "circular imports"
     #our other items are going to import DB as well

@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -9,7 +11,8 @@ from resources.store import Store, StoreList
 
 app = Flask(__name__)
 #SQLAlchemy DB lives at root folder of our project and 'sqlite' can be changed to other DBs
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+#os.enviorn.get('DATABASE_URL') is for PostgreSQL DB in Heroku
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'test'
 api = Api(app)
